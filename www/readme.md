@@ -64,34 +64,12 @@
    - `docker compose up -d web`
 
 ## 生产部署
-1. 准备服务器：
-   - 推荐 `Ubuntu 22.04/24.04`
-   - 安装 `docker` 和 `docker compose plugin`
-   - 安全组仅开放 `22`、`80`、`443`
-2. 上传项目到服务器，例如 `/srv/sofoyo`
-3. 在服务器根目录创建 `.env`
-   - 参考仓库根 `.env.example`
-   - 至少要设置：
-     - `POSTGRES_PASSWORD`
-     - `STRAPI_API_TOKEN`
-     - `APP_KEYS`
-     - `API_TOKEN_SALT`
-     - `ADMIN_JWT_SECRET`
-     - `TRANSFER_TOKEN_SALT`
-     - `JWT_SECRET`
-     - `PUBLIC_SITE_URL=https://你的域名`
-     - `PUBLIC_STRAPI_URL=https://你的域名`
-4. 启动生产容器：
-   - `docker compose up -d --build`
-5. 发布入口：
-   - 前台通过 `nginx` 暴露在 `80`
-   - `/admin`、`/api`、`/uploads` 均由 `nginx` 反代到 `cms`
-6. 数据持久化：
-   - PostgreSQL 使用 `postgres_data`
-   - Strapi 上传目录使用 `cms_uploads`
-7. HTTPS：
-   - 当前仓库已提供 HTTP 入口
-   - 正式上线建议在 `nginx` 前加证书配置，或使用云负载均衡 / CDN 终止 HTTPS
+- 阿里云 ECS 的完整部署步骤见仓库根文档 `DEPLOY_ECS.md`
+  - 包含服务器准备、环境变量、启动、域名、HTTPS、备份与故障排查
+  - 当前默认入口：
+    - `/` -> `web`
+    - `/admin`、`/api`、`/uploads` -> `cms`
+  - 已补充 Strapi 后台插件接口的 `nginx` 代理规则，避免 `/admin` 登录后内容管理页报错
 
 ## 已知限制
 - `cover` 媒体字段保留给后续 Strapi 媒体入库使用；首版前台先使用 `legacyCoverPath` 从 `legacy_export/site_assets` 直接读旧图。
