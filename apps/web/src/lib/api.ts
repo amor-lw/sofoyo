@@ -193,6 +193,13 @@ export function extractExcerpt(html?: string, fallback = '', maxLength = 110) {
   return `${source.slice(0, maxLength).trim()}...`;
 }
 
+export function normalizeProductText(value?: string | number | null) {
+  const text = String(value ?? '').trim();
+  if (!text) return '';
+  if (text === '0' || text === '0.0' || text === '0.00') return '';
+  return text;
+}
+
 export async function getSiteConfig(): Promise<SiteConfig> {
   const response = await request<StrapiSingleResponse<SiteConfig>>('/api/site-config?populate=*');
   return (

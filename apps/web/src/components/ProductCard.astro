@@ -1,6 +1,6 @@
 ---
 import type { Product } from '../lib/api';
-import { extractExcerpt, resolveProductImage } from '../lib/api';
+import { extractExcerpt, normalizeProductText, resolveProductImage } from '../lib/api';
 
 type Props = {
   product: Product;
@@ -9,7 +9,7 @@ type Props = {
 
 const { product, mode = 'link' } = Astro.props;
 const image = resolveProductImage(product);
-const summary = extractExcerpt(product.summary, product.code || '产品概览。', 80);
+const summary = extractExcerpt(normalizeProductText(product.summary), normalizeProductText(product.code) || '产品概览', 80);
 ---
 
 <article class="card">

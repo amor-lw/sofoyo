@@ -2,11 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductCard from '../components/ProductCard.astro';
 import NewsCard from '../components/NewsCard.astro';
-import { getNews, getProducts, getSiteConfig, getSitePages } from '../lib/api';
+import { extractExcerpt, getNews, getProducts, getSiteConfig, normalizeProductText, resolveProductImage } from '../lib/api';
 import { aboutNav, serviceNav } from '../lib/site';
 
 const siteConfig = await getSiteConfig();
-const [products, news, pages] = await Promise.all([getProducts(), getNews(), getSitePages()]);
+const [products, news] = await Promise.all([getProducts(), getNews()]);
 const pinnedProducts = products.filter((product) => product.isFeatured);
 const fallbackProducts = products.filter((product) => !product.isFeatured);
 const featuredProducts = (
@@ -15,7 +15,6 @@ const featuredProducts = (
     : products.slice(0, 6)
 );
 const featuredNews = news.slice(0, 3);
-const featuredPages = pages.filter((page) => ['about', 'honor', 'service'].includes(page.slug));
 const featuredCategories = Array.from(
   new Map(
     products
@@ -83,6 +82,52 @@ const serviceHighlights = {
     </div>
   </section>
 
+  <dialog class="product-modal" id="product-modal">
+    <form method="dialog" class="product-modal__backdrop">
+      <button class="product-modal__close" type="submit" aria-label="关闭产品详情">×</button>
+    </form>
+    <div class="product-modal__content" id="product-modal-content"></div>
+  </dialog>
+
+  <div hidden>
+    {featuredProducts.map((product) => {
+      const summary = extractExcerpt(normalizeProductText(product.summary), normalizeProductText(product.code) || '产品概览', 160);
+      const image = resolveProductImage(product);
+      const specs = [
+        ['产品编号', normalizeProductText(product.code)],
+        ['泥料', normalizeProductText(product.specNl)],
+        ['规格', normalizeProductText(product.specWg)],
+        ['吸水率', normalizeProductText(product.specXj)],
+        ['抗弯强度', normalizeProductText(product.specKg)],
+        ['尺寸', normalizeProductText(product.specCh)]
+      ].filter((item) => item[1]);
+
+      return (
+        <template id={`product-modal-template-${product.slug}`}>
+          <div class="product-modal__grid">
+            <div class="product-modal__media">
+              {image ? <img src={image} alt={product.title} loading="eager" /> : <div class="product-modal__placeholder">暂无图片</div>}
+            </div>
+            <div class="product-modal__panel">
+              <p class="product-modal__eyebrow">{product.category?.name || '产品中心'}</p>
+              <h2>{product.title}</h2>
+              <p class="product-modal__summary">{summary}</p>
+              {specs.length ? (
+                <div class="product-modal__specs">
+                  {specs.map(([label, value]) => (
+                    <p><strong>{label}：</strong>{value}</p>
+                  ))}
+                </div>
+              ) : (
+                <p class="product-modal__summary">当前产品以图片展示为主。</p>
+              )}
+            </div>
+          </div>
+        </template>
+      );
+    })}
+  </div>
+
   <section class="shell home-section home-section--alt">
     <div class="home-section__heading">
       <p class="home-section__eyebrow">栏目导览</p>
@@ -124,27 +169,6 @@ const serviceHighlights = {
     </div>
   </section>
 
-  <section class="shell home-section">
-    <div class="home-section__heading">
-      <p class="home-section__eyebrow">企业与服务</p>
-      <div>
-        <h2>企业与服务</h2>
-      </div>
-    </div>
-    <div class="home-overview-grid">
-      {featuredPages.map((page) => (
-        <a class="home-overview-card" href={`/pages/${page.slug}`}>
-          <p>{page.title}</p>
-          <strong>查看栏目详情</strong>
-        </a>
-      ))}
-      <a class="home-overview-card home-overview-card--contact" href="/contact">
-        <p>联系我们</p>
-        <strong>{siteConfig.contactPhone || '获取联系方式'}</strong>
-      </a>
-    </div>
-  </section>
-
   <section class="shell home-section home-section--compact">
     <div class="home-section__heading">
       <p class="home-section__eyebrow">新闻资讯</p>
@@ -176,4 +200,30 @@ const serviceHighlights = {
       </div>
     </div>
   </section>
+
+  <script>
+    const dialog = document.getElementById('product-modal');
+    const content = document.getElementById('product-modal-content');
+    const openButtons = document.querySelectorAll('[data-product-modal-open]');
+
+    if (dialog instanceof HTMLDialogElement && content) {
+      openButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const slug = button.getAttribute('data-product-modal-open');
+          if (!slug) return;
+          const template = document.getElementById(`product-modal-template-${slug}`);
+          if (!(template instanceof HTMLTemplateElement)) return;
+          content.innerHTML = template.innerHTML;
+          dialog.showModal();
+        });
+      });
+
+      dialog.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target === dialog) {
+          dialog.close();
+        }
+      });
+    }
+  </script>
 </BaseLayout>

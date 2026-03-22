@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { extractExcerpt, getProductCategories, getProducts, resolveProductImage } from '../../lib/api';
+import { extractExcerpt, getProductCategories, getProducts, normalizeProductText, resolveProductImage } from '../../lib/api';
 import { buildProductSectionNav } from '../../lib/site';
 
 const category = Astro.url.searchParams.get('category') || '';
@@ -50,15 +50,15 @@ const sectionNav = buildProductSectionNav(categories);
 
   <div hidden>
     {filteredProducts.map((product) => {
-      const summary = extractExcerpt(product.summary, product.code || '产品详情。', 160);
+      const summary = extractExcerpt(normalizeProductText(product.summary), normalizeProductText(product.code) || '产品概览', 160);
       const image = resolveProductImage(product);
       const specs = [
-        ['产品编号', product.code],
-        ['泥料', product.specNl],
-        ['规格', product.specWg],
-        ['吸水率', product.specXj],
-        ['抗弯强度', product.specKg],
-        ['尺寸', product.specCh]
+        ['产品编号', normalizeProductText(product.code)],
+        ['泥料', normalizeProductText(product.specNl)],
+        ['规格', normalizeProductText(product.specWg)],
+        ['吸水率', normalizeProductText(product.specXj)],
+        ['抗弯强度', normalizeProductText(product.specKg)],
+        ['尺寸', normalizeProductText(product.specCh)]
       ].filter((item) => item[1]);
 
       return (
