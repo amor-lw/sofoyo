@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getNews } from '../../lib/api';
+import { newsNav } from '../../lib/site';
+
+const category = Astro.url.searchParams.get('category') || '';
+const news = await getNews();
+const filteredNews = category ? news.filter((item) => item.category?.slug === category) : news;
+const currentLabel = newsNav.find((item) => item.href.endsWith(`category=${category}`))?.label || '全部资讯';
+---
+
+<BaseLayout title="新闻资讯 | sofoyo" description="新闻资讯">
+  <PageHero
+    eyebrow="News"
+    title="新闻资讯"
+    description={`企业新闻、行业动态、媒体报道。当前栏目：${currentLabel}`}
+    image="/legacy-assets/image/newspic.jpg"
+  />
+
+  <section class="shell section">
+    <div class="section-nav">
+      <a class:list={['section-nav__item', !category && 'is-active']} href="/news">全部资讯</a>
+      {newsNav.map((item) => (
+        <a class:list={['section-nav__item', item.href.endsWith(`category=${category}`) && 'is-active']} href={item.href}>
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="shell section stack-list">
+    {filteredNews.map((item) => (
+      <NewsCard item={item} />
+    ))}
+  </section>
+</BaseLayout>

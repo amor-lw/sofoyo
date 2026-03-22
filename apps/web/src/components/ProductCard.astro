@@ -1,0 +1,48 @@
+---
+import type { Product } from '../lib/api';
+import { extractExcerpt, resolveProductImage } from '../lib/api';
+
+type Props = {
+  product: Product;
+  mode?: 'link' | 'modal';
+};
+
+const { product, mode = 'link' } = Astro.props;
+const image = resolveProductImage(product);
+const summary = extractExcerpt(product.summary, product.code || '产品概览。', 80);
+---
+
+<article class="card">
+  {mode === 'modal' ? (
+    <button
+      class="card__media-button"
+      type="button"
+      data-product-modal-open={product.slug}
+      aria-label={`查看 ${product.title} 详情`}
+    >
+      {image && <img class="card__image" src={image} alt={product.title} loading="lazy" />}
+    </button>
+  ) : (
+    image && <img class="card__image" src={image} alt={product.title} loading="lazy" />
+  )}
+  <div class="card__body">
+    <p class="card__meta">{product.category?.name || '未分类产品'}</p>
+    {mode === 'modal' ? (
+      <h3>
+        <button class="card__title-button" type="button" data-product-modal-open={product.slug}>
+          {product.title}
+        </button>
+      </h3>
+    ) : (
+      <h3>{product.title}</h3>
+    )}
+    <p>{summary}</p>
+    {mode === 'modal' ? (
+      <button class="card__link card__link--button" type="button" data-product-modal-open={product.slug}>
+        查看详情
+      </button>
+    ) : (
+      <a class="card__link" href={`/products/${product.slug}`}>查看详情</a>
+    )}
+  </div>
+</article>

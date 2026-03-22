@@ -1,0 +1,1 @@
+INSERT INTO "cy_class2" ("id", "classname", "pid", "paixu", "classtype", "img", "remark", "infonum") VALUES (1,常见问题,0,0,0,NULL,NULL,0);

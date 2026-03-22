@@ -1,0 +1,23 @@
+---
+import type { NewsItem } from '../lib/api';
+import { extractExcerpt, resolveImage } from '../lib/api';
+
+type Props = {
+  item: NewsItem;
+};
+
+const { item } = Astro.props;
+const image = resolveImage(item.legacyCoverPath);
+const href = `/news/${item.slug}`;
+const excerpt = extractExcerpt(item.content, item.subtitle || '');
+---
+
+<article class="news-card">
+  <div class="news-card__content">
+    <p class="news-card__meta">{item.category?.name || '新闻'}</p>
+    <h3><a href={href}>{item.title}</a></h3>
+    <p>{excerpt}</p>
+    <a class="card__link" href={href}>阅读全文</a>
+  </div>
+  {image && <img class="news-card__image" src={image} alt={item.title} loading="lazy" />}
+</article>

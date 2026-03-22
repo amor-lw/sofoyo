@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { getNews, getProducts, getSiteConfig, getSitePages } from '../lib/api';
+import { aboutNav, serviceNav } from '../lib/site';
+
+const siteConfig = await getSiteConfig();
+const [products, news, pages] = await Promise.all([getProducts(), getNews(), getSitePages()]);
+const pinnedProducts = products.filter((product) => product.isFeatured);
+const fallbackProducts = products.filter((product) => !product.isFeatured);
+const featuredProducts = (
+  pinnedProducts.length
+    ? [...pinnedProducts, ...fallbackProducts].slice(0, 6)
+    : products.slice(0, 6)
+);
+const featuredNews = news.slice(0, 3);
+const featuredPages = pages.filter((page) => ['about', 'honor', 'service'].includes(page.slug));
+const featuredCategories = Array.from(
+  new Map(
+    products
+      .filter((product) => product.category?.name && product.category?.slug)
+      .map((product) => [product.category!.slug, product.category!])
+  ).values()
+).slice(0, 5);
+const aboutHighlights = {
+  about: '了解企业定位、发展历程与核心制造能力。',
+  honor: '查看企业荣誉资质与品牌积累，快速建立合作信任。',
+  culture: '认识品牌理念、团队气质与长期经营方向。',
+  workshop: '查看生产流程与工艺控制，理解品质保障来源。',
+  history: '了解海外投资布局与长期发展规划。'
+};
+const serviceHighlights = {
+  service: '查看销售网络与服务覆盖区域，快速找到合作方向。',
+  'service-join': '了解合作支持、加盟方式与渠道拓展路径。',
+  'service-method': '查看施工方法与铺装重点，降低现场理解成本。',
+  'service-knowledge': '浏览屋瓦常识与材料知识，辅助选型和施工。',
+  'service-projects': '查看工程案例与实际应用效果，判断适配场景。'
+};
+---
+
+<BaseLayout title={`${siteConfig.siteName} | 新官网`} description={siteConfig.heroSubtitle}>
+  <section class="home-hero">
+    <div class="shell home-hero__inner">
+      <div class="home-hero__copy">
+        <p class="home-hero__eyebrow">屋面系统与古建配套材料</p>
+        <h1>{siteConfig.heroTitle || siteConfig.siteName}</h1>
+        <p class="home-hero__lead">{siteConfig.heroSubtitle}</p>
+        <p class="home-hero__text">{siteConfig.homepageAbout}</p>
+        <div class="home-hero__actions">
+          <a class="home-button" href="/products">查看产品中心</a>
+          <a class="home-button home-button--ghost" href="/pages/about">了解企业实力</a>
+        </div>
+      </div>
+      <div class="home-hero__visual">
+        <div class="home-hero__image-panel">
+          <img src="/legacy-assets/banner/1.jpg" alt={siteConfig.siteName} loading="eager" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell home-section">
+    <div class="home-section__heading">
+      <p class="home-section__eyebrow">产品与应用</p>
+      <div>
+        <h2>产品中心</h2>
+      </div>
+    </div>
+    <div class="home-category-grid">
+      {featuredCategories.map((category) => (
+        <a class="home-category-card" href={`/products?category=${encodeURIComponent(category.slug)}`}>
+          <span>产品分类</span>
+          <strong>{category.name}</strong>
+          <em>进入该分类</em>
+        </a>
+      ))}
+    </div>
+    <div class="card-grid home-product-grid">
+      {featuredProducts.map((product) => (
+        <ProductCard product={product} mode="modal" />
+      ))}
+    </div>
+  </section>
+
+  <section class="shell home-section home-section--alt">
+    <div class="home-section__heading">
+      <p class="home-section__eyebrow">栏目导览</p>
+      <div>
+        <h2>关于我们与客户服务</h2>
+      </div>
+    </div>
+    <div class="home-subnav-grid">
+      <section class="home-panel">
+        <div class="home-panel__intro">
+          <p class="home-panel__eyebrow">关于我们</p>
+          <h3>企业信息与品牌实力</h3>
+          <p>从企业简介、荣誉资质到文化和流程，集中展示企业可信度与长期经营能力。</p>
+        </div>
+        <div class="home-subnav-list">
+          {aboutNav.map((item) => (
+            <a class="home-subnav-card" href={item.href}>
+              <strong>{item.label}</strong>
+              <span>{aboutHighlights[item.href.replace('/pages/', '') as keyof typeof aboutHighlights]}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+      <section class="home-panel">
+        <div class="home-panel__intro">
+          <p class="home-panel__eyebrow">客户服务</p>
+          <h3>服务能力与应用支持</h3>
+          <p>让营销网络、施工方法、工程案例和材料知识在首页就能被清楚发现。</p>
+        </div>
+        <div class="home-subnav-list">
+          {serviceNav.map((item) => (
+            <a class="home-subnav-card" href={item.href}>
+              <strong>{item.label}</strong>
+              <span>{serviceHighlights[item.href.replace('/pages/', '') as keyof typeof serviceHighlights]}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="shell home-section">
+    <div class="home-section__heading">
+      <p class="home-section__eyebrow">企业与服务</p>
+      <div>
+        <h2>企业与服务</h2>
+      </div>
+    </div>
+    <div class="home-overview-grid">
+      {featuredPages.map((page) => (
+        <a class="home-overview-card" href={`/pages/${page.slug}`}>
+          <p>{page.title}</p>
+          <strong>查看栏目详情</strong>
+        </a>
+      ))}
+      <a class="home-overview-card home-overview-card--contact" href="/contact">
+        <p>联系我们</p>
+        <strong>{siteConfig.contactPhone || '获取联系方式'}</strong>
+      </a>
+    </div>
+  </section>
+
+  <section class="shell home-section home-section--compact">
+    <div class="home-section__heading">
+      <p class="home-section__eyebrow">新闻资讯</p>
+      <div>
+        <h2>新闻资讯</h2>
+      </div>
+    </div>
+    <div class="stack-list home-news-list">
+      {featuredNews.map((item) => (
+        <NewsCard item={item} />
+      ))}
+    </div>
+    <div class="home-section__footer">
+      <a class="home-button home-button--ghost" href="/news">进入新闻资讯</a>
+    </div>
+  </section>
+
+  <section class="shell section section--compact">
+    <div class="section-heading">
+      <p class="section-heading__eyebrow">联系咨询</p>
+      <h2>如需产品选型、合作沟通或工程支持，可直接联系我们</h2>
+    </div>
+    <div class="intro-grid">
+      <p>{siteConfig.address || '欢迎通过电话、邮箱或现场沟通了解产品选型与合作方式。'}</p>
+      <div class="intro-grid__links">
+        <a href="/contact">查看联系方式</a>
+        {siteConfig.contactPhone && <a href={`tel:${siteConfig.contactPhone}`}>{siteConfig.contactPhone}</a>}
+        {siteConfig.contactEmail && <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

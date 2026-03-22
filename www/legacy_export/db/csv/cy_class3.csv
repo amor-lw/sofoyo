@@ -1,0 +1,1 @@
+INSERT INTO "cy_class3" ("id", "classname", "pid", "paixu", "classtype", "img", "remark", "infonum") VALUES (10,企业新闻,0,0,0,NULL,NULL,0), (11,行业新闻,0,0,0,NULL,NULL,0), (14,媒体报道,0,0,0,NULL,NULL,0), (16,屋瓦常识,0,0,0,NULL,NULL,0);

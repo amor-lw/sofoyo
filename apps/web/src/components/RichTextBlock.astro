@@ -1,0 +1,23 @@
+---
+type Props = {
+  html?: string;
+};
+
+const { html = '' } = Astro.props;
+
+function rewriteLegacyPaths(input: string) {
+  return input
+    .replace(
+      /(\b(?:src|href)=["'])(?!https?:\/\/|\/\/|\/|#|data:)(banner|image|uploadpic|propic)\/([^"'?#>]+)([^"'>]*)/gi,
+      '$1/legacy-assets/$2/$3$4'
+    )
+    .replace(
+      /(\burl\(["']?)(?!https?:\/\/|\/\/|\/|data:)(banner|image|uploadpic|propic)\/([^"')?#]+)([^"')]*)/gi,
+      '$1/legacy-assets/$2/$3$4'
+    );
+}
+
+const content = rewriteLegacyPaths(html);
+---
+
+<div class="rich-text" set:html={content}></div>

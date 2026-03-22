@@ -1,0 +1,32 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import { getSiteConfig } from '../lib/api';
+
+type Props = {
+  title: string;
+  description?: string;
+};
+
+const { title, description = 'sofoyo 新官网' } = Astro.props;
+const siteConfig = await getSiteConfig();
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <Header siteName={siteConfig.siteName} />
+    <main>
+      <slot />
+    </main>
+    <Footer siteConfig={siteConfig} />
+  </body>
+</html>

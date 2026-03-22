@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { getSiteConfig } from '../lib/api';
+
+const siteConfig = await getSiteConfig();
+---
+
+<BaseLayout title="联系我们 | sofoyo" description="联系方式">
+  <PageHero
+    eyebrow="Contact"
+    title="联系我们"
+    description="联系信息展示。"
+    image="/legacy-assets/image/contactpic.jpg"
+  />
+
+  <section class="shell section contact-grid">
+    <div class="detail-panel">
+      <p class="detail-panel__title">联系方式</p>
+      <p>电话：{siteConfig.contactPhone || '待补充'}</p>
+      <p>邮箱：{siteConfig.contactEmail || '待补充'}</p>
+      <p>传真：{siteConfig.fax || '待补充'}</p>
+      <p>邮编：{siteConfig.postcode || '待补充'}</p>
+      <p>地址：{siteConfig.address || '待补充'}</p>
+    </div>
+    <div class="contact-map">
+      <img src="/legacy-assets/image/map.jpg" alt="地图" />
+    </div>
+  </section>
+</BaseLayout>

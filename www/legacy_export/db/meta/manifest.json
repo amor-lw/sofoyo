@@ -1,0 +1,328 @@
+{
+  "generatedAt": 1773850914,
+  "csvDir": "/home/mo/sofoyo/www/legacy_export/db/csv",
+  "schema": "/home/mo/sofoyo/www/legacy_export/db/schema/schema.postgres.sql",
+  "tables": [
+    {
+      "table": "CY_Admin",
+      "rows": 0
+    },
+    {
+      "table": "CY_announce",
+      "rows": 0
+    },
+    {
+      "table": "CY_announce2",
+      "rows": 0
+    },
+    {
+      "table": "CY_bumen",
+      "rows": 0
+    },
+    {
+      "table": "CY_cks",
+      "rows": 0
+    },
+    {
+      "table": "CY_class",
+      "rows": 0
+    },
+    {
+      "table": "cy_class2",
+      "rows": 0
+    },
+    {
+      "table": "cy_class3",
+      "rows": 0
+    },
+    {
+      "table": "cy_class4",
+      "rows": 0
+    },
+    {
+      "table": "cy_class5",
+      "rows": 0
+    },
+    {
+      "table": "cy_class6",
+      "rows": 0
+    },
+    {
+      "table": "CY_countshop",
+      "rows": 0
+    },
+    {
+      "table": "CY_counttotal",
+      "rows": 0
+    },
+    {
+      "table": "CY_down",
+      "rows": 0
+    },
+    {
+      "table": "CY_FAQ",
+      "rows": 0
+    },
+    {
+      "table": "CY_feedback",
+      "rows": 0
+    },
+    {
+      "table": "CY_feedback1",
+      "rows": 0
+    },
+    {
+      "table": "cy_feedbackclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_file",
+      "rows": 0
+    },
+    {
+      "table": "CY_game",
+      "rows": 0
+    },
+    {
+      "table": "CY_hdgg",
+      "rows": 0
+    },
+    {
+      "table": "cy_hdgg2",
+      "rows": 0
+    },
+    {
+      "table": "cy_hdggclass",
+      "rows": 0
+    },
+    {
+      "table": "cy_hdggclass2",
+      "rows": 0
+    },
+    {
+      "table": "CY_hdtp",
+      "rows": 0
+    },
+    {
+      "table": "CY_hdtpclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_hltz",
+      "rows": 0
+    },
+    {
+      "table": "CY_job",
+      "rows": 0
+    },
+    {
+      "table": "CY_jobs",
+      "rows": 0
+    },
+    {
+      "table": "CY_link",
+      "rows": 0
+    },
+    {
+      "table": "CY_log",
+      "rows": 0
+    },
+    {
+      "table": "CY_magazine",
+      "rows": 0
+    },
+    {
+      "table": "CY_News",
+      "rows": 0
+    },
+    {
+      "table": "cy_news1",
+      "rows": 0
+    },
+    {
+      "table": "cy_news2",
+      "rows": 0
+    },
+    {
+      "table": "cy_news3",
+      "rows": 0
+    },
+    {
+      "table": "cy_news4",
+      "rows": 0
+    },
+    {
+      "table": "cy_news5",
+      "rows": 0
+    },
+    {
+      "table": "cy_news6",
+      "rows": 0
+    },
+    {
+      "table": "cy_photobox",
+      "rows": 0
+    },
+    {
+      "table": "CY_product",
+      "rows": 0
+    },
+    {
+      "table": "CY_productclass",
+      "rows": 0
+    },
+    {
+      "table": "cy_productsclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_QQ",
+      "rows": 0
+    },
+    {
+      "table": "CY_QQclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_sp",
+      "rows": 0
+    },
+    {
+      "table": "CY_spclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_tishi",
+      "rows": 0
+    },
+    {
+      "table": "CY_tongzhi",
+      "rows": 0
+    },
+    {
+      "table": "CY_tongzhiclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_user",
+      "rows": 0
+    },
+    {
+      "table": "CY_userbal",
+      "rows": 0
+    },
+    {
+      "table": "CY_userbal_class",
+      "rows": 0
+    },
+    {
+      "table": "CY_vote",
+      "rows": 0
+    },
+    {
+      "table": "CY_webinfo",
+      "rows": 0
+    },
+    {
+      "table": "CY_wenhua",
+      "rows": 0
+    },
+    {
+      "table": "CY_wenhuaclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_xqxz",
+      "rows": 0
+    },
+    {
+      "table": "CY_xqxz_users",
+      "rows": 0
+    },
+    {
+      "table": "CY_yxyg",
+      "rows": 0
+    },
+    {
+      "table": "CY_ztjq",
+      "rows": 0
+    },
+    {
+      "table": "CY_ztjqclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_zxdc",
+      "rows": 0
+    },
+    {
+      "table": "CY_zxyy",
+      "rows": 0
+    },
+    {
+      "table": "guestbook",
+      "rows": 0
+    },
+    {
+      "table": "mast",
+      "rows": 0
+    },
+    {
+      "table": "CY_area",
+      "rows": 0
+    },
+    {
+      "table": "cy_class1",
+      "rows": 0
+    },
+    {
+      "table": "CY_countonline",
+      "rows": 0
+    },
+    {
+      "table": "CY_feedback2",
+      "rows": 0
+    },
+    {
+      "table": "CY_hltzclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_photo",
+      "rows": 0
+    },
+    {
+      "table": "CY_Products",
+      "rows": 0
+    },
+    {
+      "table": "cy_tishiclass",
+      "rows": 0
+    },
+    {
+      "table": "CY_wall",
+      "rows": 0
+    },
+    {
+      "table": "CY_yxtd",
+      "rows": 0
+    },
+    {
+      "table": "cy_config",
+      "rows": 0
+    },
+    {
+      "table": "CY_feedback3",
+      "rows": 0
+    },
+    {
+      "table": "cy_news3_输出错误",
+      "rows": 0
+    },
+    {
+      "table": "CY_feedback2_输出错误",
+      "rows": 0
+    }
+  ],
+  "tableCount": 80
+}

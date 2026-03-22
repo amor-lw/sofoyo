@@ -1,0 +1,79 @@
+{
+  "version": "2026-03-19",
+  "decision": {
+    "feedback2": {
+      "mode": "stats_only",
+      "excludeFields": [
+        "CataName",
+        "username",
+        "tel",
+        "email",
+        "web",
+        "fax",
+        "address",
+        "title",
+        "remark",
+        "reply",
+        "qq",
+        "UID"
+      ]
+    }
+  },
+  "sources": {
+    "product": "legacy_export/db/csv_utf8/CY_hdtp.csv",
+    "news": "legacy_export/db/csv_utf8/cy_news3.csv",
+    "feedback": "legacy_export/db/csv_utf8/CY_feedback2.csv"
+  },
+  "targets": {
+    "productCategory": "api::product-category.product-category",
+    "product": "api::product.product",
+    "newsCategory": "api::news-category.news-category",
+    "news": "api::news.news",
+    "feedbackStats": "api::migration-stat.migration-stat"
+  },
+  "mapping": {
+    "CY_hdtp": {
+      "legacyId": "ID",
+      "title": "title",
+      "code": "code",
+      "summary": ["j1", "j2"],
+      "content": "content",
+      "coverPath": "page",
+      "categoryLegacyClassId": "class_ID",
+      "hits": "hits",
+      "publishedAtLegacy": "time",
+      "spec": {
+        "nl": "nl",
+        "wg": "wg",
+        "xj": "xj",
+        "kg": "kg",
+        "ch": "ch"
+      }
+    },
+    "cy_news3": {
+      "legacyId": "ID",
+      "title": "title",
+      "subtitle": "title2",
+      "content": "content",
+      "coverPath": "page",
+      "categoryLegacyClassId": "class_ID",
+      "hits": "hits",
+      "publishedAtLegacy": ["time", "bdate"],
+      "legacySort": "px",
+      "isFeatured": {
+        "from": "btype",
+        "rule": "btype!=0"
+      }
+    },
+    "CY_feedback2_stats": {
+      "count": "ID",
+      "time": "time",
+      "source": "laiyuan"
+    }
+  },
+  "batch": {
+    "size": 50,
+    "retry": 2,
+    "delayMs": 120
+  }
+}

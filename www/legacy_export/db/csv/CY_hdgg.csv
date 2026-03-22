@@ -1,0 +1,1 @@
+INSERT INTO "cy_hdgg" ("id", "title", "page", "product", "content", "time", "hits", "user", "class_id", "did", "kw", "dw", "k1", "k2", "k3", "k4", "hot", "k5", "k6") VALUES (5,fasdfwefaw,NULL,NULL,NULL,2019-10-19 11:47:43,0,admin,0,0.0000,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL);

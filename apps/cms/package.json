@@ -1,0 +1,30 @@
+{
+  "name": "sofoyo-cms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strapi CMS for the sofoyo rebuild",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "import:seed": "node ./scripts/import-seed.js",
+    "token:web": "node ./scripts/create-api-token.js",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/plugin-users-permissions": "5.12.2",
+    "@strapi/provider-upload-local": "5.12.2",
+    "@strapi/strapi": "5.12.2",
+    "esbuild": "^0.27.0",
+    "esbuild-register": "^3.6.0",
+    "pg": "^8.13.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=22.x.x",
+    "npm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,63 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import RichTextBlock from '../../components/RichTextBlock.astro';
+import { getProductBySlug, getProductCategories, resolveProductImage } from '../../lib/api';
+import { buildProductSectionNav } from '../../lib/site';
+
+const slug = Astro.params.slug || '';
+const [product, categories] = await Promise.all([getProductBySlug(slug), getProductCategories()]);
+
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const sectionNav = buildProductSectionNav(categories);
+const currentCategorySlug = product.category?.slug || '';
+
+const specs = [
+  ['泥料', product.specNl],
+  ['规格', product.specWg],
+  ['吸水率', product.specXj],
+  ['抗弯强度', product.specKg],
+  ['尺寸', product.specCh]
+].filter((entry) => entry[1]);
+---
+
+<BaseLayout title={`${product.title} | 产品中心`} description={product.seo?.description || product.summary}>
+  <PageHero
+    eyebrow={product.category?.name || 'Product'}
+    title={product.title}
+    description={product.summary || product.code}
+    image={resolveProductImage(product)}
+  />
+
+  <section class="shell section section--compact">
+    <div class="section-nav">
+      {sectionNav.map((item) => (
+        <a
+          class:list={['section-nav__item', item.slug === currentCategorySlug && 'is-active', !item.slug && !currentCategorySlug && 'is-active']}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="shell section detail-grid">
+    <div>
+      <RichTextBlock html={product.content || '<p>该产品暂无详细介绍。</p>'} />
+    </div>
+    <aside class="detail-panel">
+      <p class="detail-panel__title">产品信息</p>
+      <p>产品编号：{product.code || '未提供'}</p>
+      <p>浏览次数：{product.hits || 0}</p>
+      {specs.map(([label, value]) => (
+        <p>{label}：{value}</p>
+      ))}
+    </aside>
+  </section>
+</BaseLayout>

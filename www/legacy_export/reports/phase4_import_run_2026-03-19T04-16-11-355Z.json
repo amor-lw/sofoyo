@@ -1,0 +1,18 @@
+{
+  "runId": "2026-03-19T04-16-11-355Z",
+  "mode": "dry_run",
+  "reports": [
+    {
+      "type": "product",
+      "dryRun": true,
+      "startBatch": 1,
+      "endBatch": 1,
+      "totalBatches": 8,
+      "startedAt": "2026-03-19T04:16:11.354Z",
+      "ok": 50,
+      "fail": 0,
+      "failures": [],
+      "finishedAt": "2026-03-19T04:16:11.355Z"
+    }
+  ]
+}

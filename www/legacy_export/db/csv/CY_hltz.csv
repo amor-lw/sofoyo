@@ -1,0 +1,8 @@
+INSERT INTO "cy_hltz" ("id", "title", "page", "content", "time", "hits", "user", "class_id", "tt", "kw", "ds", "img") VALUES (58,公司简介,NULL,<div class="jj_txt">
+<p>
+</p>
+<p style="margin: 0px 0px 15px; padding: 0px; outline-style: none; font-size: 16px; color: rgb(34, 34, 34); line-height: 26px; text-indent: 30px; font-family: &quot;microsoft yahei&quot;; background-color: rgb(240, 240, 240);">福建省安溪皇家茶业有限公司源于乌龙茶百年王氏制茶世家，“是一家集茶叶生产、开发、销售为一体的茶企”，改革开放后国家政策大力支持农业化做大做强，迎着改革的春潮，皇家茶叶以“健康，绿色品质”为产品观，于2007年创立了“李光地名茶”连锁品牌，“曾荣获“福建省**”和“茶业十大自主创新品牌””，是茶叶历史名人文化品牌，现有几百家连锁店，得到加盟商的一致好评。</p>
+<p style="margin: 0px 0px 15px; padding: 0px; outline-style: none; font-size: 16px; color: rgb(34, 34, 34); line-height: 26px; text-indent: 30px; font-family: &quot;microsoft yahei&quot;; background-color: rgb(240, 240, 240);">宜宾五粮液集团公司推出的“真龙天子”酒、广西和重庆中烟工业公司推出的“真龙、天子”烟，历经发展 ，已经拥有广泛的消费群体 ，市场度高 ，品牌度大 。同时 ，“真龙天子”典故传颂已久，不断有古装影视剧、历史文学作品渲染造势，均彰显出中华民族延续几千年的皇室尊崇文化，深入人心，“真龙天子”品牌的商业价值非常高，据专家估计约上百亿。</p>
+<p style="margin: 0px 0px 15px; padding: 0px; outline-style: none; font-size: 16px; color: rgb(34, 34, 34); line-height: 26px; text-indent: 30px; font-family: &quot;microsoft yahei&quot;; background-color: rgb(240, 240, 240);">福建省安溪皇家茶业有限公司的法人代表已经在国家商标总局合法注册了“真龙天子”茶类商标，并已获得正式注册证件 “真龙天子”茶品牌经过多年的精心筹备，仅进军烟酒快消渠道，开发不用放冰箱．保质期长，“与烟酒包装属性类似的茶产品；真龙天子茶开创共赢烟酒茶渠道先行者、是真正做到“烟酒茶融合 共赢新模式”的系统化茶品牌，打造未来千亿市场“航空母舰”强势茶品牌、我们致力成为民族品牌。“真龙天子茶”是烟酒行业第2桶金、您不容错过！诚招酒水渠道经销商！耀世开启《千城百万专柜》、真龙天子茶千亿工程横空出世 …</p>
+<p></p>
+</div>,2020-06-30 09:57:13,0,NULL,0,NULL,NULL,NULL,NULL), (59,企业愿景,NULL,“真龙天子茶”致力成为民族品牌,2020-06-30 09:55:21,0,NULL,0,NULL,NULL,NULL,NULL), (60,联系我们,NULL,NULL,2019-10-16 16:06:28,0,NULL,0,NULL,NULL,NULL,NULL);

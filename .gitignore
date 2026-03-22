@@ -1,0 +1,41 @@
+# macOS / Windows / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Node / Astro / Strapi
+node_modules/
+apps/*/node_modules/
+apps/web/.astro/
+apps/web/dist/
+apps/cms/dist/
+apps/cms/.cache/
+apps/cms/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime / temp
+tmp/
+temp/
+.tmp/
+
+# Docker / local data
+www/uploads/
+
+# Legacy www root: keep migration artifacts and docs, ignore old ASP site runtime files
+www/*
+!www/readme.md
+!www/README.MD
+!www/legacy_export/
+!www/legacy_export/**

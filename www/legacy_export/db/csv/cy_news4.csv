@@ -1,0 +1,1 @@
+INSERT INTO "cy_news4" ("id", "title", "page", "content", "content2", "time", "hits", "user", "class_id", "px", "bdate", "bcount", "btype", "prices", "k1", "k2", "k3", "k4") VALUES (1,觉得解放军,NULL,tytytyty,NULL,2010-09-09 15:35:40,0,admin,0,1,2010-09-09 00:00:00,90,0,0.0000,erertr,tytyt,tytyt,tytytyt);

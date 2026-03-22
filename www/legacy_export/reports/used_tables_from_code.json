@@ -1,0 +1,122 @@
+{
+  "usedTables": [
+    "CY_feedback2",
+    "CY_hdtp",
+    "CY_productclass",
+    "cy_news3"
+  ],
+  "usage": {
+    "feedback.asp": [
+      "CY_feedback2"
+    ],
+    "pro14.asp": [
+      "CY_hdtp"
+    ],
+    "pro24.asp": [
+      "CY_hdtp"
+    ],
+    "index.asp": [
+      "CY_hdtp",
+      "cy_news3"
+    ],
+    "news1.asp": [
+      "cy_news3"
+    ],
+    "pro5.asp": [
+      "CY_hdtp"
+    ],
+    "pro19.asp": [
+      "CY_hdtp"
+    ],
+    "pro6.asp": [
+      "CY_hdtp"
+    ],
+    "pro8.asp": [
+      "CY_hdtp"
+    ],
+    "pro3.asp": [
+      "CY_hdtp"
+    ],
+    "pro9.asp": [
+      "CY_hdtp"
+    ],
+    "pro25.asp": [
+      "CY_hdtp"
+    ],
+    "pro4.asp": [
+      "CY_hdtp"
+    ],
+    "pro28.asp": [
+      "CY_hdtp"
+    ],
+    "pro.asp": [
+      "CY_hdtp"
+    ],
+    "pro13.asp": [
+      "CY_hdtp"
+    ],
+    "pro17.asp": [
+      "CY_hdtp"
+    ],
+    "pro21.asp": [
+      "CY_hdtp"
+    ],
+    "pro7.asp": [
+      "CY_hdtp"
+    ],
+    "pro22.asp": [
+      "CY_hdtp"
+    ],
+    "pro26.asp": [
+      "CY_hdtp"
+    ],
+    "news2.asp": [
+      "cy_news3"
+    ],
+    "pro20.asp": [
+      "CY_hdtp"
+    ],
+    "news.asp": [
+      "cy_news3"
+    ],
+    "pro16.asp": [
+      "CY_hdtp"
+    ],
+    "knowledge.asp": [
+      "cy_news3"
+    ],
+    "pro18.asp": [
+      "CY_hdtp"
+    ],
+    "pro1.asp": [
+      "CY_hdtp"
+    ],
+    "pro27.asp": [
+      "CY_hdtp"
+    ],
+    "pro12.asp": [
+      "CY_hdtp"
+    ],
+    "pro23.asp": [
+      "CY_hdtp"
+    ],
+    "pro10.asp": [
+      "CY_hdtp"
+    ],
+    "pro2.asp": [
+      "CY_hdtp"
+    ],
+    "pro11.asp": [
+      "CY_hdtp"
+    ],
+    "pro15.asp": [
+      "CY_hdtp"
+    ],
+    "INC/menu.asp": [
+      "CY_productclass"
+    ],
+    "INC/bmenu.asp": [
+      "CY_productclass"
+    ]
+  }
+}

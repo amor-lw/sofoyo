@@ -1,0 +1,23 @@
+{
+  "generatedAt": 1773850944,
+  "keyTables": [
+    {
+      "table": "CY_hdtp",
+      "rows": 394
+    },
+    {
+      "table": "cy_news3",
+      "rows": 50
+    },
+    {
+      "table": "CY_feedback2",
+      "rows": 235
+    },
+    {
+      "table": "guestbook",
+      "rows": 0
+    }
+  ],
+  "csvDir": "/home/mo/sofoyo/www/legacy_export/db/csv_utf8",
+  "schema": "/home/mo/sofoyo/www/legacy_export/db/schema/schema.postgres.sql"
+}

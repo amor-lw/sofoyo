@@ -1,0 +1,62 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import RichTextBlock from '../../components/RichTextBlock.astro';
+import { getNewsBySlug, resolveImage } from '../../lib/api';
+
+const slug = Astro.params.slug || '';
+const from = Astro.url.searchParams.get('from') || '';
+const item = await getNewsBySlug(slug);
+
+if (!item) {
+  return Astro.redirect('/404');
+}
+
+const returnHref = from === 'knowledge' ? '/pages/service-knowledge' : '/news';
+const returnLabel = from === 'knowledge' ? '返回屋瓦常识' : '返回新闻列表';
+---
+
+<BaseLayout title={`${item.title} | 新闻资讯`} description={item.seo?.description || item.subtitle}>
+  <PageHero
+    eyebrow={item.category?.name || 'News'}
+    title={item.title}
+    description={item.subtitle}
+    image={resolveImage(item.legacyCoverPath)}
+  />
+
+  <section class="shell section section--compact">
+    <div class="detail-actions">
+      <button class="back-link" type="button" data-history-back data-return-href={returnHref}>返回上一页</button>
+      <a class="back-link back-link--ghost" href={returnHref}>{returnLabel}</a>
+    </div>
+  </section>
+
+  <section class="shell section detail-grid">
+    <div>
+      <RichTextBlock html={item.content || '<p>该文章暂无正文。</p>'} />
+    </div>
+    <aside class="detail-panel">
+      <p class="detail-panel__title">文章信息</p>
+      <p>分类：{item.category?.name || '未分类'}</p>
+      <p>浏览次数：{item.hits || 0}</p>
+      <p>是否推荐：{item.isFeatured ? '是' : '否'}</p>
+    </aside>
+  </section>
+
+  <script>
+    const backButton = document.querySelector('[data-history-back]');
+
+    if (backButton instanceof HTMLButtonElement) {
+      backButton.addEventListener('click', () => {
+        if (window.history.length > 1) {
+          window.history.back();
+          return;
+        }
+
+        window.location.href = backButton.dataset.returnHref || '/news';
+      });
+    }
+  </script>
+</BaseLayout>

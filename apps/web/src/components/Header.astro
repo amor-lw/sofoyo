@@ -1,0 +1,37 @@
+---
+import { mainNav } from '../lib/site';
+
+type Props = {
+  siteName: string;
+};
+
+const { siteName } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="shell site-header__inner">
+    <a class="site-logo" href="/">
+      <span class="site-logo__mark">SF</span>
+      <span>{siteName}</span>
+    </a>
+    <nav class="site-nav">
+      {mainNav.map((item) =>
+        item.children?.length ? (
+          <div class="site-nav__group">
+            <a class="site-nav__link" href={item.href}>
+              {item.label}
+              <span class="site-nav__caret" aria-hidden="true">+</span>
+            </a>
+            <div class="site-nav__submenu">
+              {item.children.map((child) => (
+                <a href={child.href}>{child.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a class="site-nav__link" href={item.href}>{item.label}</a>
+        )
+      )}
+    </nav>
+  </div>
+</header>

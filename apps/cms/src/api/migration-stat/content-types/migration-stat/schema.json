@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "migration_stats",
+  "info": {
+    "singularName": "migration-stat",
+    "pluralName": "migration-stats",
+    "displayName": "Migration Stat"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "key": {
+      "type": "string",
+      "required": true
+    },
+    "total": {
+      "type": "integer",
+      "default": 0
+    },
+    "byYear": {
+      "type": "json"
+    },
+    "bySource": {
+      "type": "json"
+    },
+    "note": {
+      "type": "text"
+    }
+  }
+}

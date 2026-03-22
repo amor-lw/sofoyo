@@ -1,0 +1,1 @@
+INSERT INTO "cy_productclass" ("id", "classname", "pid", "paixu", "classtype", "img", "content") VALUES (20,企业荣誉,0,0,0,NULL,NULL), (22,企业风采,0,0,0,NULL,NULL);

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { extractExcerpt, getProductCategories, getProducts, resolveProductImage } from '../../lib/api';
+import { buildProductSectionNav } from '../../lib/site';
+
+const category = Astro.url.searchParams.get('category') || '';
+const [products, categories] = await Promise.all([getProducts(), getProductCategories()]);
+const filteredProducts = category ? products.filter((product) => product.category?.slug === category) : products;
+const currentLabel = categories.find((item) => item.slug === category)?.name || '全部产品';
+const sectionNav = buildProductSectionNav(categories);
+---
+
+<BaseLayout title="产品中心 | sofoyo" description="产品中心">
+  <PageHero
+    eyebrow="Products"
+    title="产品中心"
+    description={`当前产品体系。当前分类：${currentLabel}`}
+    image="/legacy-assets/image/propic.jpg"
+  />
+
+  <section class="shell section">
+    <div class="section-nav">
+      {sectionNav.map((item) => (
+        <a
+          class:list={['section-nav__item', item.slug === category && 'is-active', !item.slug && !category && 'is-active']}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="shell section">
+    <div class="card-grid">
+      {filteredProducts.map((product) => (
+        <ProductCard product={product} mode="modal" />
+      ))}
+    </div>
+  </section>
+
+  <dialog class="product-modal" id="product-modal">
+    <form method="dialog" class="product-modal__backdrop">
+      <button class="product-modal__close" type="submit" aria-label="关闭产品详情">×</button>
+    </form>
+    <div class="product-modal__content" id="product-modal-content"></div>
+  </dialog>
+
+  <div hidden>
+    {filteredProducts.map((product) => {
+      const summary = extractExcerpt(product.summary, product.code || '产品详情。', 160);
+      const image = resolveProductImage(product);
+      const specs = [
+        ['产品编号', product.code],
+        ['泥料', product.specNl],
+        ['规格', product.specWg],
+        ['吸水率', product.specXj],
+        ['抗弯强度', product.specKg],
+        ['尺寸', product.specCh]
+      ].filter((item) => item[1]);
+
+      return (
+        <template id={`product-modal-template-${product.slug}`}>
+          <div class="product-modal__grid">
+            <div class="product-modal__media">
+              {image ? <img src={image} alt={product.title} loading="eager" /> : <div class="product-modal__placeholder">暂无图片</div>}
+            </div>
+            <div class="product-modal__panel">
+              <p class="product-modal__eyebrow">{product.category?.name || '产品中心'}</p>
+              <h2>{product.title}</h2>
+              <p class="product-modal__summary">{summary}</p>
+              {specs.length ? (
+                <div class="product-modal__specs">
+                  {specs.map(([label, value]) => (
+                    <p><strong>{label}：</strong>{value}</p>
+                  ))}
+                </div>
+              ) : (
+                <p class="product-modal__summary">当前产品以图片展示为主。</p>
+              )}
+            </div>
+          </div>
+        </template>
+      );
+    })}
+  </div>
+
+  <script>
+    const dialog = document.getElementById('product-modal');
+    const content = document.getElementById('product-modal-content');
+    const openButtons = document.querySelectorAll('[data-product-modal-open]');
+
+    if (dialog instanceof HTMLDialogElement && content) {
+      openButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const slug = button.getAttribute('data-product-modal-open');
+          if (!slug) return;
+          const template = document.getElementById(`product-modal-template-${slug}`);
+          if (!(template instanceof HTMLTemplateElement)) return;
+          content.innerHTML = template.innerHTML;
+          dialog.showModal();
+        });
+      });
+
+      dialog.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target === dialog) {
+          dialog.close();
+        }
+      });
+    }
+  </script>
+</BaseLayout>

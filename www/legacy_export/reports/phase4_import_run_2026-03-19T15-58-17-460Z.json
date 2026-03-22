@@ -1,0 +1,49 @@
+{
+  "startedAt": "2026-03-19T15:58:17.458Z",
+  "dryRun": true,
+  "stages": [
+    {
+      "stage": "productCategories",
+      "ok": 29,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "newsCategories",
+      "ok": 3,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "sitePages",
+      "ok": 13,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "siteConfig",
+      "ok": 1,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "migrationStat",
+      "ok": 1,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "products",
+      "ok": 394,
+      "fail": 0,
+      "failures": []
+    },
+    {
+      "stage": "news",
+      "ok": 50,
+      "fail": 0,
+      "failures": []
+    }
+  ],
+  "finishedAt": "2026-03-19T15:58:17.460Z"
+}
