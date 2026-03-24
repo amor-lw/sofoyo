@@ -14,15 +14,36 @@ const { siteName } = Astro.props;
       <span class="site-logo__mark">SF</span>
       <span>{siteName}</span>
     </a>
-    <nav class="site-nav">
+    <button
+      class="site-nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-site-nav-toggle
+    >
+      菜单
+    </button>
+    <nav class="site-nav" id="site-nav" data-site-nav>
       {mainNav.map((item) =>
         item.children?.length ? (
           <div class="site-nav__group">
-            <a class="site-nav__link" href={item.href}>
-              {item.label}
-              <span class="site-nav__caret" aria-hidden="true">+</span>
-            </a>
-            <div class="site-nav__submenu">
+            <div class="site-nav__group-trigger">
+              <a class="site-nav__link" href={item.href}>{item.label}</a>
+              <button
+                class="site-nav__group-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`submenu-${item.href.replaceAll('/', '-') || 'root'}`}
+                data-site-nav-group-toggle
+              >
+                <span class="site-nav__caret" aria-hidden="true">+</span>
+                <span class="sr-only">展开{item.label}子菜单</span>
+              </button>
+            </div>
+            <div
+              class="site-nav__submenu"
+              id={`submenu-${item.href.replaceAll('/', '-') || 'root'}`}
+            >
               {item.children.map((child) => (
                 <a href={child.href}>{child.label}</a>
               ))}
@@ -35,3 +56,49 @@ const { siteName } = Astro.props;
     </nav>
   </div>
 </header>
+
+<script>
+  const navToggle = document.querySelector('[data-site-nav-toggle]');
+  const nav = document.querySelector('[data-site-nav]');
+  const mobileQuery = window.matchMedia('(max-width: 900px)');
+
+  const syncDesktopState = () => {
+    if (!navToggle || !nav) return;
+
+    if (!mobileQuery.matches) {
+      nav.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+
+      document.querySelectorAll('[data-site-nav-group-toggle]').forEach((button) => {
+        button.setAttribute('aria-expanded', 'false');
+      });
+
+      document.querySelectorAll('.site-nav__submenu').forEach((submenu) => {
+        submenu.classList.remove('is-open');
+      });
+    }
+  };
+
+  navToggle?.addEventListener('click', () => {
+    if (!nav) return;
+
+    const isOpen = nav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.querySelectorAll('[data-site-nav-group-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!mobileQuery.matches) return;
+
+      const submenuId = button.getAttribute('aria-controls');
+      const submenu = submenuId ? document.getElementById(submenuId) : null;
+      if (!submenu) return;
+
+      const isOpen = submenu.classList.toggle('is-open');
+      button.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+
+  syncDesktopState();
+  mobileQuery.addEventListener('change', syncDesktopState);
+</script>
