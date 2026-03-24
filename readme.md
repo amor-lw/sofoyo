@@ -71,6 +71,33 @@
     - `/admin`、`/api`、`/uploads` -> `cms`
   - 已补充 Strapi 后台插件接口的 `nginx` 代理规则，避免 `/admin` 登录后内容管理页报错
 
+## 阿里云部署实战经验
+- 本项目在阿里云 ECS 上可以稳定跑通，但 `cms` 的 Docker 构建对内存比较敏感。`1.6Gi` 内存且无 swap 时，`strapi build` 很容易在镜像构建阶段触发 `JavaScript heap out of memory`。
+- 当前验证可用的做法是：
+  - 服务器先补 `4G` swap
+  - `apps/cms/Dockerfile` 默认使用 `BUILD_NODE_OPTIONS=--max-old-space-size=2048`
+  - `compose.yml` 里显式把 `CMS_BUILD_NODE_OPTIONS` 传给 `cms.build.args`
+- `sharp` 依赖安装在云服务器上也容易慢或失败。当前已在 `apps/cms/Dockerfile` 中固定：
+  - `npm ci --no-audit --no-fund`
+  - `NPM_REGISTRY=https://registry.npmmirror.com`
+  - `SHARP_BINARY_HOST=https://registry.npmmirror.com/-/binary/sharp`
+  - `SHARP_LIBVIPS_BINARY_HOST=https://registry.npmmirror.com/-/binary/sharp-libvips`
+- 数据导入在服务器上实测通过。导入命令可以直接在容器内执行：
+  - `docker cp www/legacy_export/db/meta/site_seed.json sofoyo-cms-1:/tmp/site_seed.json`
+  - `docker compose exec -T cms sh -lc 'cd /app && npm run import:seed -- /tmp/site_seed.json'`
+- `npm run import:seed` 结束时仍可能打印 `tarn aborted` 并返回非零退出码，但只要导入 summary 正常输出，且 API / 数据库计数正确，这通常只是 Strapi 关闭阶段噪音，不代表导入失败。
+- 数据导入后必须重新生成前台只读 token，并写回服务器根目录 `.env` 的 `STRAPI_API_TOKEN`。否则前台请求 `site-config`、`products`、`news-items` 时会持续返回 `401`。
+- `web` 使用新 token 后需要重启才能读到更新：
+  - `docker compose up -d web nginx`
+- 如果只想更新前台，不要习惯性执行 `docker compose up -d --build web nginx`。这会连带重新 build 依赖图中的服务，实测可能把 `cms` 也一起重建。只改环境变量时优先用不带 `--build` 的启动命令。
+- 线上验证至少要覆盖：
+  - `curl -H "Authorization: Bearer $TOKEN" http://127.0.0.1:1337/api/site-config?populate=*`
+  - `curl -g -H "Authorization: Bearer $TOKEN" 'http://127.0.0.1:1337/api/products?populate=category&pagination[pageSize]=2'`
+  - `curl -g -H "Authorization: Bearer $TOKEN" 'http://127.0.0.1:1337/api/news-items?populate=category&sort[0]=publishedAtLegacy:desc&pagination[pageSize]=3'`
+  - `curl -I http://127.0.0.1/`
+  - `curl http://127.0.0.1/products`
+- 当前线上还验证过一个前端修复：手机端首页导航已改为折叠式菜单，避免原先移动端整块漂浮子菜单直接铺开。
+
 ## 已知限制
 - `cover` 媒体字段保留给后续 Strapi 媒体入库使用；首版前台先使用 `legacyCoverPath` 从 `legacy_export/site_assets` 直接读旧图。
 - `CY_productclass.csv` 导出结果不完整，因此产品分类首版按旧前台菜单与 `pro*.asp` 的 `class_id` 显式映射。
