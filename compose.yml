@@ -13,6 +13,11 @@ services:
   cms:
     build:
       context: ./apps/cms
+      args:
+        BUILD_NODE_OPTIONS: ${CMS_BUILD_NODE_OPTIONS:---max-old-space-size=2048}
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+        SHARP_BINARY_HOST: ${SHARP_BINARY_HOST:-https://registry.npmmirror.com/-/binary/sharp}
+        SHARP_LIBVIPS_BINARY_HOST: ${SHARP_LIBVIPS_BINARY_HOST:-https://registry.npmmirror.com/-/binary/sharp-libvips}
     env_file:
       - ./apps/cms/.env.example
     environment:
