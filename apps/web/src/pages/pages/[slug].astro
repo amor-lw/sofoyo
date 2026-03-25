@@ -5,6 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import RichTextBlock from '../../components/RichTextBlock.astro';
 import { getSitePageBySlug, resolveImage, resolveMediaUrl } from '../../lib/api';
+import { legacyHonorGallery } from '../../lib/honorGallery';
 import { getPageSectionNav } from '../../lib/site';
 
 const slug = Astro.params.slug || '';
@@ -16,6 +17,15 @@ if (!page) {
 
 const sectionNav = getPageSectionNav(slug);
 const gallery = page.gallery || [];
+const honorGallery =
+  slug === 'honor'
+    ? gallery.length > 0
+      ? gallery.map((item) => ({
+          title: item.alternativeText || item.name || page.title,
+          image: resolveMediaUrl(item.url)
+        }))
+      : legacyHonorGallery
+    : [];
 const heroImageOverrides: Record<string, string> = {
   workshop: '/legacy-assets/image/aboutpic.jpg',
   'service-join': '/legacy-assets/image/servicepic.jpg'
@@ -36,16 +46,24 @@ const heroImage = heroImageOverrides[slug] || resolveImage(page.heroImage);
       </div>
     </section>
   )}
-  {slug === 'honor' && gallery.length > 0 && (
+  {slug === 'honor' && honorGallery.length > 0 && (
     <section class="shell section section--compact">
       <div class="section-heading">
         <p class="section-heading__eyebrow">Honor Gallery</p>
         <h2>企业荣誉图集</h2>
       </div>
       <div class="media-grid">
-        {gallery.map((item) => (
+        {honorGallery.map((item, index) => (
           <figure class="media-card">
-            <img src={resolveMediaUrl(item.url)} alt={item.alternativeText || item.name || page.title} loading="lazy" />
+            <button
+              class="honor-card__button"
+              type="button"
+              data-honor-modal-open={String(index)}
+              aria-label={`查看 ${item.title}`}
+            >
+              <img src={item.image} alt={item.title} loading="lazy" />
+            </button>
+            <figcaption class="honor-card__caption">{item.title}</figcaption>
           </figure>
         ))}
       </div>
@@ -54,4 +72,57 @@ const heroImage = heroImageOverrides[slug] || resolveImage(page.heroImage);
   <section class="shell section">
     <RichTextBlock html={page.content || '<p>页面内容待导入。</p>'} />
   </section>
+
+  {slug === 'honor' && honorGallery.length > 0 && (
+    <>
+      <dialog class="product-modal" id="honor-modal">
+        <form method="dialog" class="product-modal__backdrop">
+          <button class="product-modal__close" type="submit" aria-label="关闭荣誉图预览">×</button>
+        </form>
+        <div class="product-modal__content" id="honor-modal-content"></div>
+      </dialog>
+      <div hidden>
+        {honorGallery.map((item, index) => (
+          <template id={`honor-modal-template-${index}`}>
+            <div class="product-modal__grid">
+              <div class="product-modal__media">
+                <img src={item.image} alt={item.title} loading="eager" />
+              </div>
+              <div class="product-modal__panel">
+                <p class="product-modal__eyebrow">Honor</p>
+                <h2>{item.title}</h2>
+                <p class="product-modal__summary">企业荣誉图集展示。</p>
+              </div>
+            </div>
+          </template>
+        ))}
+      </div>
+      <script>
+        const honorModal = document.getElementById('honor-modal');
+        const honorModalContent = document.getElementById('honor-modal-content');
+        const honorTriggers = document.querySelectorAll('[data-honor-modal-open]');
+
+        if (honorModal instanceof HTMLDialogElement && honorModalContent) {
+          honorTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+              const modalId = trigger.getAttribute('data-honor-modal-open');
+              if (!modalId) return;
+
+              const template = document.getElementById(`honor-modal-template-${modalId}`);
+              if (!(template instanceof HTMLTemplateElement)) return;
+
+              honorModalContent.innerHTML = template.innerHTML;
+              honorModal.showModal();
+            });
+          });
+
+          honorModal.addEventListener('click', (event) => {
+            if (event.target === honorModal) {
+              honorModal.close();
+            }
+          });
+        }
+      </script>
+    </>
+  )}
 </BaseLayout>

@@ -651,6 +651,22 @@ img {
   border-radius: 18px;
 }
 
+.honor-card__button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.honor-card__caption {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 .card,
 .news-card,
 .stack-item,
@@ -877,6 +893,20 @@ img {
   margin-top: 0;
   font-size: 1.05rem;
   color: #fff;
+}
+
+.site-footer__beian {
+  margin-bottom: 0;
+}
+
+.site-footer__beian a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-footer__beian a:hover,
+.site-footer__beian a:focus-visible {
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {

@@ -240,6 +240,30 @@
   - `certbot.timer` 已启用
   - 当前线上证书签发者已切到 `Let's Encrypt`
   - 当前证书到期时间为 `2026-06-23`
+ - 证书申请时不能只签 `www.sofoyo.com`。如果只覆盖 `www`，用户直接访问 `https://sofoyo.com` 会出现“连接不是私密连接”，因为证书 SAN 不匹配。
+ - 当前线上证书已经改为同时覆盖：
+   - `sofoyo.com`
+   - `www.sofoyo.com`
+ - 当前 `nginx` 也已经同步调整：
+   - `80` 端口同时接住 `sofoyo.com` 和 `www.sofoyo.com`
+   - `443` 端口同时接住 `sofoyo.com` 和 `www.sofoyo.com`
+   - 裸域 `sofoyo.com` 的 `HTTP` 和 `HTTPS` 请求统一 `301` 到 `https://www.sofoyo.com`
+- 当前 `certbot` 线上续期仍沿用同一个证书名称 `www.sofoyo.com`，但其 SAN 已包含裸域和 `www` 两个域名。
+- 前端上线后还发现一个内容迁移差异：旧站“企业荣誉”页的图片墙并不来自 `site-page.gallery`，而是旧表 `CY_product` 的 `class_id=20`。
+- 迁移种子里这部分没有导入到 Strapi，所以云服务器上的首版页面会丢失荣誉图片墙与点击预览功能。
+- 当前前端已经补了兼容策略：
+   - `honor` 页优先读取 CMS 的 `gallery`
+   - 如果 CMS 没有补图，则自动回退到旧站荣誉图集
+   - 同时保留点击查看大图的预览弹层
+- 这类“旧站页面依赖非通用表结构”的功能，上线后要逐页回归，不要只检查 CMS 通用字段是否有值。
+- Strapi 后台新增产品并上传封面后，如果前台图片显示不出来，先检查服务器 `.env`：
+  - `PUBLIC_STRAPI_URL`
+  - `PUBLIC_SITE_URL`
+- 生产环境这两个值都必须指向正式 HTTPS 域名，例如：
+  - `PUBLIC_STRAPI_URL=https://www.sofoyo.com`
+  - `PUBLIC_SITE_URL=https://www.sofoyo.com`
+- 如果错误地写成 `http://www.sofoyo.com:1337` 或 `http://www.sofoyo.com:4321`，前台会把新上传媒体渲染成对外不可用的地址，例如 `http://www.sofoyo.com:1337/uploads/...`，结果就是 CMS 里有图，但网站前台不显示。
+- 修正 `.env` 后只需要重启 `web`，不需要重建 `cms`。
 
 ## 已知限制
 - `cover` 媒体字段保留给后续 Strapi 媒体入库使用；首版前台先使用 `legacyCoverPath` 从 `legacy_export/site_assets` 直接读旧图。
