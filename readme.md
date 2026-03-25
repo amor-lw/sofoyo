@@ -226,6 +226,20 @@
   - `curl -I http://127.0.0.1/`
   - `curl http://127.0.0.1/products`
 - 当前线上还验证过一个前端修复：手机端首页导航已改为折叠式菜单，避免原先移动端整块漂浮子菜单直接铺开。
+- HTTPS 当前已接入 `www.sofoyo.com`，并补了自动续期方案：
+  - 宿主机安装 `certbot`
+  - 通过 `webroot` 模式写入 `/srv/sofoyo/deploy/nginx/acme`
+  - `nginx` 容器额外挂载 `./deploy/nginx/acme:/var/www/certbot:ro`
+  - `/.well-known/acme-challenge/` 在 `80` 端口直接回源 challenge 文件，其他 `www.sofoyo.com` 的 HTTP 请求再跳转到 HTTPS
+  - Let’s Encrypt 原始证书保留在 `/etc/letsencrypt/live/www.sofoyo.com/`
+  - 线上 `nginx` 实际读取的证书文件位于 `/srv/sofoyo/deploy/nginx/certs/`
+  - 续期后的同步脚本：`/usr/local/bin/sofoyo-sync-cert.sh`
+  - Certbot deploy hook：`/etc/letsencrypt/renewal-hooks/deploy/sofoyo-sync-cert.sh`
+  - 当前 deploy hook 使用 `docker compose restart nginx`，确保续期后容器真正重新加载证书
+- 自动续期状态已确认：
+  - `certbot.timer` 已启用
+  - 当前线上证书签发者已切到 `Let's Encrypt`
+  - 当前证书到期时间为 `2026-06-23`
 
 ## 已知限制
 - `cover` 媒体字段保留给后续 Strapi 媒体入库使用；首版前台先使用 `legacyCoverPath` 从 `legacy_export/site_assets` 直接读旧图。
