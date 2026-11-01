@@ -1,0 +1,39 @@
+{
+  "kind": "singleType",
+  "collectionName": "miniprogram_configs",
+  "info": {
+    "singularName": "miniprogram-config",
+    "pluralName": "miniprogram-configs",
+    "displayName": "Miniprogram Config"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "泥土的温度，建筑的表情"
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "陶土 · 砖石 · 瓦"
+    },
+    "hero": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-category.product-category"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product"
+    }
+  }
+}

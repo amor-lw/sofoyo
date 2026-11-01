@@ -123,6 +123,17 @@ function headers() {
     : {};
 }
 
+async function collection<T>(endpoint: string): Promise<T[]> {
+  const items: T[] = [];
+  for (let page = 1; ; page++) {
+    const response = await request<StrapiCollectionResponse<T>>(`${endpoint}&pagination[page]=${page}`);
+    if (!response) throw new Error('CMS product collection unavailable');
+    items.push(...response.data);
+    const pagination = response.meta?.pagination;
+    if (!pagination || page >= pagination.pageCount) return items;
+  }
+}
+
 async function request<T>(endpoint: string): Promise<T | null> {
   try {
     const response = await fetch(`${STRAPI_URL}${endpoint}`, {
@@ -214,24 +225,22 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  const response = await request<StrapiCollectionResponse<Product>>(
-    '/api/products?populate[0]=category&populate[1]=cover&sort[0]=category.sortOrder:asc&sort[1]=sortOrder:asc&sort[2]=title:asc&pagination[pageSize]=200'
+  return collection<Product>(
+    '/api/products?filters[showOnWebsite][$eq]=true&filters[category][showOnWebsite][$eq]=true&filters[category][isActive][$eq]=true&filters[category][publishedAt][$notNull]=true&populate[0]=category&populate[1]=cover&sort[0]=category.sortOrder:asc&sort[1]=sortOrder:asc&sort[2]=title:asc&pagination[pageSize]=200'
   );
-  return response?.data || [];
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const response = await request<StrapiCollectionResponse<Product>>(
-    `/api/products?populate[0]=category&populate[1]=cover&filters[slug][$eq]=${encodeURIComponent(slug)}`
+    `/api/products?filters[showOnWebsite][$eq]=true&filters[category][showOnWebsite][$eq]=true&filters[category][isActive][$eq]=true&filters[category][publishedAt][$notNull]=true&populate[0]=category&populate[1]=cover&filters[slug][$eq]=${encodeURIComponent(slug)}`
   );
   return response?.data?.[0] || null;
 }
 
 export async function getProductCategories(): Promise<ProductCategory[]> {
-  const response = await request<StrapiCollectionResponse<ProductCategory>>(
-    '/api/product-categories?sort[0]=sortOrder:asc&pagination[pageSize]=100'
+  return collection<ProductCategory>(
+    '/api/product-categories?filters[showOnWebsite][$eq]=true&filters[isActive][$eq]=true&sort[0]=sortOrder:asc&pagination[pageSize]=100'
   );
-  return response?.data || [];
 }
 
 export async function getNews(): Promise<NewsItem[]> {

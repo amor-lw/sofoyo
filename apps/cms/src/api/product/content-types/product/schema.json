@@ -38,7 +38,9 @@
     "cover": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "category": {
       "type": "relation",
@@ -79,6 +81,37 @@
     "seo": {
       "type": "component",
       "component": "shared.seo"
+    },
+    "showOnWebsite": {
+      "type": "boolean",
+      "default": false
+    },
+    "showOnMiniprogram": {
+      "type": "boolean",
+      "default": false
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "sourceKey": {
+      "type": "string",
+      "unique": true
+    },
+    "sourcePath": {
+      "type": "text",
+      "private": true
+    },
+    "sourceFingerprint": {
+      "type": "string",
+      "private": true
+    },
+    "importMediaMap": {
+      "type": "json",
+      "private": true
     }
   }
 }

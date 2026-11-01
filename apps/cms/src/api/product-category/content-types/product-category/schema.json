@@ -36,6 +36,25 @@
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "category"
+    },
+    "showOnWebsite": {
+      "type": "boolean",
+      "default": false
+    },
+    "showOnMiniprogram": {
+      "type": "boolean",
+      "default": false
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "sourceKey": {
+      "type": "string",
+      "unique": true
     }
   }
 }
